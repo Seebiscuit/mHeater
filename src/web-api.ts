@@ -1,3 +1,4 @@
+import localforage from "localforage";
 
 let latency = 200;
 let id = 0;
@@ -46,6 +47,26 @@ let contacts = [
 
 export class WebAPI {
   isRequesting = false;
+
+  constructor() {
+    localforage.config({ name: 'm-heat'})
+  }
+
+  async saveHeatMap(coord) {
+    let previousCoords = <Array<any>> (await this.getHeatMap())
+
+    if (!previousCoords) previousCoords = []
+
+    previousCoords.push(coord)
+
+    localforage.setItem("coords", previousCoords)
+
+    return previousCoords
+  }
+
+  async getHeatMap() {
+    return await localforage.getItem("coords")
+  }
   
   getContactList(){
     this.isRequesting = true;
