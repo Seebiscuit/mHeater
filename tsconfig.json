@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "skipLibCheck": true,
     "typeRoots": [
