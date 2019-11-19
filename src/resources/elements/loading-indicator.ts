@@ -1,5 +1,5 @@
 import * as  nprogress from "nprogress";
-import { bindable, noView, PLATFORM } from "aurelia-framework";
+import { bindable, noView } from "aurelia-framework";
 import "nprogress/nprogress.css";
 
 @noView

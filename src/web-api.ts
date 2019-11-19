@@ -1,4 +1,6 @@
-import localforage from "localforage";
+import * as localforage from "localforage";
+import { Point } from "./interfaces/Point";
+import { sortPoint } from "./utility";
 
 let latency = 200;
 let id = 0;
@@ -45,6 +47,8 @@ let contacts = [
   }
 ];
 
+const MAX_COORD_SET = 10E3
+
 export class WebAPI {
   isRequesting = false;
 
@@ -52,20 +56,30 @@ export class WebAPI {
     localforage.config({ name: 'm-heat'})
   }
 
-  async saveHeatMap(coord) {
-    let previousCoords = <Array<any>> (await this.getHeatMap())
+  async saveHeatMap(point: Point | Array<Point>) {
+    let previousCoords = <Array<Point>> (await this.getHeatMap())
 
     if (!previousCoords) previousCoords = []
 
-    previousCoords.push(coord)
+    if (Array.isArray(point)) {
+      previousCoords = previousCoords.concat(point)
+    } else {
+      previousCoords.push(point)
+    }
 
-    localforage.setItem("coords", previousCoords)
+    if (previousCoords.length >= MAX_COORD_SET * 1.1) {debugger
+      previousCoords = previousCoords.slice(0, MAX_COORD_SET)
+    }
+
+    previousCoords.sort(sortPoint)
+
+    localforage.setItem("points", previousCoords)
 
     return previousCoords
   }
 
   async getHeatMap() {
-    return await localforage.getItem("coords")
+    return await localforage.getItem("points")
   }
   
   getContactList(){

@@ -1,5 +1,8 @@
 import {FrameworkConfiguration, PLATFORM} from 'aurelia-framework';
 
 export function configure(config: FrameworkConfiguration) {
-  config.globalResources([PLATFORM.moduleName('./elements/loading-indicator')]);
+  config.globalResources([
+    PLATFORM.moduleName('./elements/loading-indicator'),
+    PLATFORM.moduleName('./elements/capture-coords')
+  ]);
 }
