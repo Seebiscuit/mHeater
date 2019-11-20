@@ -52,10 +52,14 @@ function calcDistance(x: number, y: number) {
 }
 
 function calculateHeatmapColor(minimum: number, maximum: number, value: number): string {
-	const ratio = 2 * (value-minimum) / (maximum - minimum)
+	const SENSITIVITY = 3, CUTOFF = 2
+
+	const ratio = SENSITIVITY * (value-minimum) / (maximum - minimum)
 	const g = Math.floor(Math.max(0, 255*(1 - ratio)))
 	const r = Math.floor(Math.max(0, 255*(ratio - 1)))
 	const b = 255 - g - r
+
+	if (value < CUTOFF) return `rgb(2, 133, 0)` // pleasing green background
 
 	return `rgb(${r}, ${g}, ${b})`
 }

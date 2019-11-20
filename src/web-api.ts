@@ -49,7 +49,7 @@ let contacts = [
   }
 ];
 
-const MAX_COORD_SET = 10E2
+const MAX_COORD_SET = 10E3
 
 @inject(EventAggregator)
 export class WebAPI {
