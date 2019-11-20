@@ -1,10 +1,10 @@
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { inject, bindable, observable } from 'aurelia-framework';
+import { inject, bindable, observable, TaskQueue } from 'aurelia-framework';
 import { customElement } from 'aurelia-templating';
 import { HeatmapUpdated } from "../../messages";
 import { calculateGridColor, calculateGridHits } from 'utility';
 
-@inject(EventAggregator)
+@inject(EventAggregator, TaskQueue)
 @customElement('draw-heatmap')
 export class DrawHeatMap {
   @bindable resolution: number = 12
@@ -12,7 +12,7 @@ export class DrawHeatMap {
 
   @observable container: any
 
-  grid: Array<any>
+  @observable grid: Array<any>
   rowSize: number
   gridSide: number
   
@@ -20,7 +20,7 @@ export class DrawHeatMap {
     return this.resolution
   }
 
-  constructor(private ea: EventAggregator) {
+  constructor(private ea: EventAggregator, private taskQueue: TaskQueue) {
     ea.subscribe(HeatmapUpdated, data => this.onHeatmapUpdated(data.coordMap))
     
     this.grid = []
@@ -56,6 +56,13 @@ export class DrawHeatMap {
   }
 
   onHeatmapUpdated(coordMap) {
+    console.time('Updating Grid')
     this.grid = calculateGridColor(calculateGridHits(this.grid, coordMap, this.rowSize, this.columnSize, this.gridSide))
+    console.timeEnd('Updating Grid')
+    console.time('Rendering Grid')
+  }
+
+  gridChanged() {
+    this.taskQueue.queueMicroTask(_ => console.timeEnd('Rendering Grid'))
   }
 }

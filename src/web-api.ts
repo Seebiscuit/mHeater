@@ -50,7 +50,7 @@ let contacts = [
   }
 ];
 
-const MAX_COORD_SET = 10E3
+const MAX_COORD_SET = 10E2
 
 @inject(EventAggregator)
 export class WebAPI {
@@ -71,8 +71,8 @@ export class WebAPI {
       previousCoords.push(point)
     }
 
-    if (previousCoords.length >= MAX_COORD_SET * 1.1) {debugger
-      previousCoords = previousCoords.slice(0, MAX_COORD_SET)
+    if (previousCoords.length >= MAX_COORD_SET * 1.1) {
+      previousCoords = previousCoords.slice(MAX_COORD_SET * 0.1)
     }
 
     previousCoords.sort(sortPoint)

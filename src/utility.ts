@@ -20,7 +20,7 @@ export function calculateGridHits(sourceGrid: Array<Grid>, coords: Array<Point>,
 
 		const fullRows = columnSize * numberOfRows
 
-		if (numberOfColumns + fullRows  >= grid.length) {debugger
+		if (numberOfColumns + fullRows  >= grid.length) {
 			return  // Point is outside of grid, continue
 		}
 
