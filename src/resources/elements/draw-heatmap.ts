@@ -1,9 +1,10 @@
+import { Grid } from './../../interfaces/Grid';
 import { Point } from './../../interfaces/Point';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject, bindable, observable, TaskQueue } from 'aurelia-framework';
 import { customElement } from 'aurelia-templating';
 import { HeatmapUpdated } from "../../messages";
-import { calculateGridColor, calculateGridHits } from 'utility';
+import { calculateGridColor, calculateGridHits, BASE_HEATMAP_COLOR } from 'utility';
 
 @inject(EventAggregator, TaskQueue)
 @customElement('draw-heatmap')
@@ -13,7 +14,7 @@ export class DrawHeatMap {
 
   @observable container: any
 
-  @observable grid: Array<any>
+  @observable grid: Array<Grid>
   rowSize: number
   gridSide: number
   
@@ -50,7 +51,8 @@ export class DrawHeatMap {
         this.grid[row * this.columnSize + column] = {
           top: row * side,
           left: column * side,
-          hits: 0
+          hits: 0,
+          color: BASE_HEATMAP_COLOR
         }
       }
     }

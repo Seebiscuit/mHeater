@@ -1,6 +1,9 @@
 import { Point } from "./interfaces/Point";
 import { Grid } from './interfaces/Grid';
 import { fileURLToPath } from "url";
+
+export const BASE_HEATMAP_COLOR = "rgb(2, 133, 0)"
+
 export function areEqual(obj1, obj2) {
 	return Object.keys(obj1).every((key) => obj2.hasOwnProperty(key) && (obj1[key] === obj2[key]));
 };
@@ -59,7 +62,7 @@ function calculateHeatmapColor(minimum: number, maximum: number, value: number):
 	const r = Math.floor(Math.max(0, 255*(ratio - 1)))
 	const b = 255 - g - r
 
-	if (value < CUTOFF) return `rgb(2, 133, 0)` // pleasing green background
+	if (value < CUTOFF) return BASE_HEATMAP_COLOR // pleasing green background
 
 	return `rgb(${r}, ${g}, ${b})`
 }
