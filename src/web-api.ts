@@ -2,7 +2,6 @@ import { HeatmapUpdated } from './messages';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as localforage from "localforage";
 import { Point } from "./interfaces/Point";
-import { sortPoint } from "./utility";
 import { inject } from "aurelia-framework";
 
 let latency = 200;
@@ -75,12 +74,10 @@ export class WebAPI {
       previousCoords = previousCoords.slice(MAX_COORD_SET * 0.1)
     }
 
-    previousCoords.sort(sortPoint)
-
     localforage.setItem("points", previousCoords)
 
     this.ea.publish(new HeatmapUpdated(previousCoords))
-    
+    console.info("Coords Saved! Total points:", previousCoords.length)    
     return previousCoords
   }
 

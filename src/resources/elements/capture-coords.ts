@@ -40,7 +40,6 @@ export class CaptureCoords {
   set pointBuffer(point: Point) {
     if (this._pointBuffer.length >= this.MAX_BUFFER) {
       this.api.saveHeatMap([...this._pointBuffer])
-      console.log("pointBuffer Saved")
 
       this._pointBuffer = []
     }

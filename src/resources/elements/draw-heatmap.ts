@@ -1,3 +1,4 @@
+import { Point } from './../../interfaces/Point';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject, bindable, observable, TaskQueue } from 'aurelia-framework';
 import { customElement } from 'aurelia-templating';
@@ -55,7 +56,7 @@ export class DrawHeatMap {
     }
   }
 
-  onHeatmapUpdated(coordMap) {
+  onHeatmapUpdated(coordMap: Array<Point> | null) {
     console.time('Updating Grid')
     this.grid = calculateGridColor(calculateGridHits(this.grid, coordMap, this.rowSize, this.columnSize, this.gridSide))
     console.timeEnd('Updating Grid')

@@ -9,24 +9,29 @@ export function sortPoint(a: Point, b: Point) {
 	return calcDistance(a.x, a.y) - calcDistance(b.x, b.y)
 }
 
-export function calculateGridHits(sourceGrid: Array<Grid>, coords: Array<Point>, rowSize: number, columnSize: number, cellSide:number) {
+export function calculateGridHits(sourceGrid: Array<Grid>, coords: Array<Point> | null, rowSize: number, columnSize: number, cellSide:number) {
 	const totalWidth = columnSize * cellSide
 	const totalLength = rowSize * cellSide
 	const grid = [...sourceGrid].map(cell => ({...cell, hits: 0}))
+	let sortedCoordMap;
 
-	coords.forEach(point => {
-		const numberOfColumns = Math.floor(point.x / cellSide)
-		const numberOfRows = Math.floor(point.y / cellSide)
+	if (coords && coords.length) {
+		sortedCoordMap = coords.slice().sort(sortPoint)
+			
+		sortedCoordMap.forEach(point => {
+			const numberOfColumns = Math.floor(point.x / cellSide)
+			const numberOfRows = Math.floor(point.y / cellSide)
 
-		const fullRows = columnSize * numberOfRows
+			const fullRows = columnSize * numberOfRows
 
-		if (numberOfColumns + fullRows  >= grid.length) {
-			console.info("Point is outside of grid")
-			return  // Point is outside of grid, continue
-		}
+			if (numberOfColumns + fullRows  >= grid.length) {
+				console.info("Point is outside of grid")
+				return  // Point is outside of grid, continue
+			}
 
-		grid[numberOfColumns + fullRows].hits++
-	})
+			grid[numberOfColumns + fullRows].hits++
+		})
+	}
 
 	return grid
 }
