@@ -5,3 +5,7 @@ export class ContactUpdated {
 export class ContactViewed {
   constructor(public contact) {}
 }
+
+export class HeatmapUpdated {
+  constructor(public coordMap) {}
+}

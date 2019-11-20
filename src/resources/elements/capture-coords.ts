@@ -1,20 +1,28 @@
+import { HeatmapUpdated } from './../../messages';
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { WebAPI } from './../../web-api';
 import { bindable, noView, inject } from "aurelia-framework";
 import { Point } from "../../interfaces/Point"; 
 
 @noView
-@inject(WebAPI)
+@inject(WebAPI,EventAggregator)
 export class CaptureCoords {
   MAX_BUFFER = 100
 
   _pointBuffer: Array<Point> = []
   document: Document = window.document
 
-  constructor(private api: WebAPI) {
+  constructor(private api: WebAPI, private ea: EventAggregator) {
     this.onMouseMove = this.onMouseMove.bind(this)
   }
 
-  attached() {
+  async attached() {
+    const coordMap = await this.api.getHeatMap()
+
+    if (coordMap && coordMap.length) {
+      this.ea.publish(new HeatmapUpdated(coordMap))
+    }
+
     this.document.addEventListener("mousemove", this.onMouseMove, true)
   }
 

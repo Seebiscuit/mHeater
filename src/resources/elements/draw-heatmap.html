@@ -1,0 +1,19 @@
+<template>
+  <div css="
+    height: ${container.height}px; 
+    width: ${container.width}px; 
+    overflow: hidden; 
+    opacity: ${opacity}; 
+    pointer-events:none;">
+
+    <div repeat.for="cell of grid" css="
+      position:absolute; 
+      top: ${cell.top}px; 
+      left: ${cell.left}px;
+      background-color: ${cell.color};
+      height: ${gridSide}px;
+      width: ${gridSide}px;">
+    </div>
+
+  </div>
+</template>

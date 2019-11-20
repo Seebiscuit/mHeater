@@ -1,6 +1,9 @@
+import { HeatmapUpdated } from './messages';
+import { EventAggregator } from 'aurelia-event-aggregator';
 import * as localforage from "localforage";
 import { Point } from "./interfaces/Point";
 import { sortPoint } from "./utility";
+import { inject } from "aurelia-framework";
 
 let latency = 200;
 let id = 0;
@@ -49,14 +52,15 @@ let contacts = [
 
 const MAX_COORD_SET = 10E3
 
+@inject(EventAggregator)
 export class WebAPI {
   isRequesting = false;
 
-  constructor() {
+  constructor(private ea: EventAggregator) {
     localforage.config({ name: 'm-heat'})
   }
 
-  async saveHeatMap(point: Point | Array<Point>) {
+  async saveHeatMap(point: Point | Array<Point>): Promise<Array<Point> | null> {
     let previousCoords = <Array<Point>> (await this.getHeatMap())
 
     if (!previousCoords) previousCoords = []
@@ -75,10 +79,12 @@ export class WebAPI {
 
     localforage.setItem("points", previousCoords)
 
+    this.ea.publish(new HeatmapUpdated(previousCoords))
+    
     return previousCoords
   }
 
-  async getHeatMap() {
+  async getHeatMap(): Promise<Array<Point> | null> {
     return await localforage.getItem("points")
   }
   
