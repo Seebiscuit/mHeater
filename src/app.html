@@ -2,7 +2,7 @@
   <require from="./styles.css"></require>
   <require from="./contact-list"></require>
 
-  <draw-heatmap resolution.bind="36" opacity.bind="0.2" style="position:absolute; top:0; left:0; z-index: 9999"></draw-heatmap>
+  <draw-heatmap resolution.bind="128" opacity.bind="0.2" style="position:absolute; top:0; left:0; z-index: 9999"></draw-heatmap>
 
   <nav class="navbar navbar-light bg-light fixed-top" role="navigation">
     <a class="navbar-brand" href="#">
@@ -11,7 +11,7 @@
     </a>
   </nav>
 
-  <capture-coords></capture-coords>
+  <capture-coords container-selector="body"></capture-coords>
 
   <loading-indicator loading.bind="router.isNavigating || api.isRequesting"></loading-indicator>
 

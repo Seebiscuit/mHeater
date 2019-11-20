@@ -9,8 +9,11 @@ import { Point } from "../../interfaces/Point";
 export class CaptureCoords {
   MAX_BUFFER = 100
 
+  @bindable containerSelector: string
+  
+  container: Document | Element = window.document
+
   _pointBuffer: Array<Point> = []
-  document: Document = window.document
 
   constructor(private api: WebAPI, private ea: EventAggregator) {
     this.onMouseMove = this.onMouseMove.bind(this)
@@ -23,7 +26,10 @@ export class CaptureCoords {
       this.ea.publish(new HeatmapUpdated(coordMap))
     }
 
-    this.document.addEventListener("mousemove", this.onMouseMove, true)
+    if (this.containerSelector) 
+      this.container = this.container.querySelector(this.containerSelector) || window.document
+
+    this.container.addEventListener("mousemove", this.onMouseMove, true)
   }
 
   onMouseMove(event: MouseEvent) {
@@ -43,6 +49,6 @@ export class CaptureCoords {
   }
 
   detached() {
-    this.document.removeEventListener("mousemove", this.onMouseMove, true)    
+    this.container.removeEventListener("mousemove", this.onMouseMove, true)    
   }
 }

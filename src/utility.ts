@@ -12,7 +12,7 @@ export function sortPoint(a: Point, b: Point) {
 export function calculateGridHits(sourceGrid: Array<Grid>, coords: Array<Point>, rowSize: number, columnSize: number, cellSide:number) {
 	const totalWidth = columnSize * cellSide
 	const totalLength = rowSize * cellSide
-	const grid = [...sourceGrid]
+	const grid = [...sourceGrid].map(cell => ({...cell, hits: 0}))
 
 	coords.forEach(point => {
 		const numberOfColumns = Math.floor(point.x / cellSide)
@@ -21,6 +21,7 @@ export function calculateGridHits(sourceGrid: Array<Grid>, coords: Array<Point>,
 		const fullRows = columnSize * numberOfRows
 
 		if (numberOfColumns + fullRows  >= grid.length) {
+			console.info("Point is outside of grid")
 			return  // Point is outside of grid, continue
 		}
 
