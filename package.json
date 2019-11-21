@@ -11,10 +11,12 @@
     "au": "^0.0.1",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.2",
+    "aurelia-store": "^1.4.0",
     "bootstrap": "^4.3.1",
     "font-awesome": "^4.7.0",
     "localforage": "^1.7.3",
-    "nprogress": "^0.2.0"
+    "nprogress": "^0.2.0",
+    "rxjs": "^6.5.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.9",

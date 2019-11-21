@@ -1,11 +1,16 @@
+import { bindable, noView, inject } from "aurelia-framework";
+
 import { HeatmapUpdated } from './../../messages';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { WebAPI } from './../../web-api';
-import { bindable, noView, inject } from "aurelia-framework";
+
+import { State } from 'interfaces/State';
+import { Store } from 'aurelia-store';
 import { Point } from "../../interfaces/Point"; 
 
+import { WebAPI } from './../../web-api';
+
 @noView
-@inject(WebAPI,EventAggregator)
+@inject(WebAPI,EventAggregator, Store)
 export class CaptureCoords {
   MAX_BUFFER = 100
 
@@ -15,7 +20,9 @@ export class CaptureCoords {
 
   _pointBuffer: Array<Point> = []
 
-  constructor(private api: WebAPI, private ea: EventAggregator) {
+  public state: State;
+
+  constructor(private api: WebAPI, private ea: EventAggregator, private store: Store<State>) {
     this.onMouseMove = this.onMouseMove.bind(this)
   }
 
@@ -39,7 +46,7 @@ export class CaptureCoords {
 
   set pointBuffer(point: Point) {
     if (this._pointBuffer.length >= this.MAX_BUFFER) {
-      this.api.saveHeatMap([...this._pointBuffer])
+      this.store.dispatch('UpdatePointMap', this._pointBuffer)
 
       this._pointBuffer = []
     }
